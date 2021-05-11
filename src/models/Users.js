@@ -29,30 +29,28 @@ const UsersSchema = new Schema({
     name: {
         type: String,
         required: true
-    }, 
+    },
     email:{
         type: String,
         unique:true,
-        require: true,
+        require: false, // VB: Setei como false, remover depois
         lowercase: true,
     },
     password:{
         type: String,
-        require: true,
-        select: false, //select false indica que o campo password não vai ser exibido numa listagem de usuários
+        require: false, // VB: Setei como false, remover depois
+        select: false, //OB: select false indica que o campo password não vai ser exibido numa listagem de usuários
     },
     passwordResetToken:{
         type: String,
+        require: false, // VB: Setei como false, remover depois
         select: false,
     },
     passwordResetExpires:{
         type: Date,
+        require: false, // VB: Setei como false, remover depois
         select: false,
     },
-    createAt:{
-        type: Date,
-        default: Date.now,
-    },    
     birthdate: {
         type: Date,
         required: true
@@ -68,7 +66,13 @@ const UsersSchema = new Schema({
     phoneNumber: {
         type: String,
         required: true
-    }
+    },
+    likes: [{
+        type: String,
+    }],
+    dislikes: [{
+        type: String
+    }],
 }, {
     timestamps: true
 });

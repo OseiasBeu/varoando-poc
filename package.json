@@ -6,12 +6,11 @@
   "author": "Vitor Brito <vitorlsbrito@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start":"npm src/index.js",
+    "start": "npm src/index.js",
     "dev": "nodemon src/index.js"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
-    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^9.0.0",
