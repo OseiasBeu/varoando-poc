@@ -2,18 +2,26 @@ const Users = require('../models/Users');
 
 class UserController {
     async index(req, res) {
-        const users = await Users.find();
+        const users = await Users.find().select(['-__v', '-_id']);
 
         /*
             Temos que criar uma lista de likes e dislikes
-            Não podemos exibir os perfis que o usuário já deu like e os que ele já deu dislike
+            Não podemos exibir os perfis que o usuário já deu like e os que ele já deu dislike (ou mostrar o status de gostei nao gostei)
         */
 
         res.json(users);
     }
 
     async show(req, res) {
-        res.json({ users: 'View' });
+        const { id } = req.params;
+
+        const user = await Users.findOne({ phoneNumber: id }).select(['-__v', '-_id']);
+
+        if (!user) {
+            return res.status(404).json({ error: 'This user does not exist.' });
+        }
+
+        res.json(user);
     }
 
     async store(req, res) {
@@ -38,40 +46,36 @@ class UserController {
             gender: user.gender,
             phoneNumber: user.phoneNumber
         });
-
-
-
-        /*
-        const { name, phone, email, password, admin } = req.body;
-
-        const userExists = await UsersRepository.findByEmail(email);
-
-        if(userExists) {
-            return res.status(400).json({ error: 'This e-mail is already in use.' });
-        }
-
-        const passwordHash = bcrypt.hashSync(password, 10);
-
-        const user = await UsersRepository.store({
-            name,
-            phone,
-            email,
-            password: passwordHash,
-            admin
-        });
-
-        delete user.password;
-
-        res.json(user);
-        */
     }
 
     async update(req, res) {
-        res.json({ users: 'Update' });
+        const { id } = req.params;
+        const { name, birthdate, gender, phoneNumber } = req.body;
+
+        const user = await Users.findOne({ phoneNumber: id }).select(['-__v', '-_id']);
+
+        if (!user) {
+            return res.status(404).json({ error: 'This user does not exist.' });
+        }
+
+        const updatedUser = await Users.findOneAndUpdate({ phoneNumber: id }, {
+            name,
+            birthdate,
+            gender,
+            phoneNumber
+        }, {
+            new: true
+        }).select(['-__v', '-_id']);
+
+        res.json(updatedUser);
     }
 
     async delete(req, res) {
-        res.json({ users: 'Delete' });
+        const { id } = req.params;
+
+        const deleteOp = await Users.findOneAndDelete({ phoneNumber: id });
+
+        res.sendStatus(202);
     }
 }
 
