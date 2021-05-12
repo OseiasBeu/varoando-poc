@@ -73,6 +73,9 @@ const UsersSchema = new Schema({
     dislikes: [{
         type: String
     }],
+    blocked: [{
+        type: String
+    }]
 }, {
     timestamps: true
 });
