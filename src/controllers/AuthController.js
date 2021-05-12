@@ -6,9 +6,10 @@ require('dotenv').config()
 
 class AuthController {
     async register(req, res){
-        const { name, email, plain_password, birthdate, gender, phoneNumber } = req.body;
+        const { name, birthdate, gender, phoneNumber } = req.body;
+        const plain_password = 'varoando12345'
         const password = await bcrypt.hash(plain_password, 10);
-        const userExists = await Users.findOne({ email });
+        const userExists = await Users.findOne({ phoneNumber });
 
         if (userExists) {
             return res.status(403).json({ error: 'Usuário já existe!' });
@@ -16,7 +17,6 @@ class AuthController {
 
         const user = await Users.create({
             name,
-            email, 
             password,
             birthdate,
             gender,
@@ -25,14 +25,14 @@ class AuthController {
 
         res.json({
             name: user.name,
-            email: user.email,
+            email: user.phoneNumber,
         });
     }
     async login(req, res) {
-        const { email, password } = req.body;
-        const user = await Users.findOne({ email });
+        const { phoneNumber } = req.body;
+        const  password = 'varoando12345'
+        const user = await Users.findOne({ phoneNumber });
         console.log(user)
-        // bcrypt.hash(password, 10).then((res) => console.log(res));
         if (!user){        
             console.log(user)
             res.status(500)
@@ -55,7 +55,7 @@ class AuthController {
                 res.status(403)
                 res.json({
                   auth: false,
-                  message: "E-mail e/ou senhas incorreto(s)"
+                  message: "usuario e/ou senhas incorreto(s)"
                 })
               }
             })
@@ -63,7 +63,7 @@ class AuthController {
             res.status(403)
             res.json({
               auth: false,
-              message: "E-mail e/ou senhas incorreto(s)"
+              message: "usuario e/ou senhas incorreto(s)"
             })
           }
     }
