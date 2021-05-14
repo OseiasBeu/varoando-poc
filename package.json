@@ -6,7 +6,7 @@
   "author": "Vitor Brito <vitorlsbrito@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "npm src/index.js",
+    "start": "yarn src/index.js",
     "dev": "nodemon src/index.js"
   },
   "dependencies": {

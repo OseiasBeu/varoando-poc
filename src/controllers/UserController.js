@@ -2,7 +2,14 @@ const Users = require('../models/Users');
 
 class UserController {
     async index(req, res) {
-        const users = await Users.find().select(['-__v', '-_id']);
+        const { user } = req.headers;
+
+        // const users = await Users.find().select(['-__v', '-_id']);
+        const users = await Users.find({
+            $and: [
+                { phoneNumber: { $ne: user }}
+            ]
+        }).select(['-__v', '-_id']);
 
         /*
             Temos que criar uma lista de likes e dislikes

@@ -15,6 +15,14 @@ class ActionController {
         userData.likes.push(target);
         await userData.save()
 
+        const userLikePosition = targetExists.likes.indexOf(user);
+
+        if (userLikePosition >= 0) {
+            return res.status(200).json({ status: 'It is a match!' });
+            // Nos outros APP's aparece uma notificacao para o outro usuário.
+            // Acredito que devemos usar o socket.io para notificar.
+        }
+
         res.sendStatus(202);
     }
 
@@ -48,8 +56,6 @@ class ActionController {
         const userData = await Users.findOne({ phoneNumber: user });
         
         const targetLikePosition = userData.likes.indexOf(target);
-
-        console.log(userData.likes);
 
         if (targetLikePosition >=0) {
             userData.likes.splice(targetLikePosition, 1);
